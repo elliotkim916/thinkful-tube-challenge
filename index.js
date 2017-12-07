@@ -21,7 +21,7 @@ function renderResult(title, thumbnailUrl, id, vidDescription, channel, channelI
       <a href="${channelBaseUrl}${channelId}" target="_blank">${channel}</a>
     </h3>
       <a href="${videoBaseUrl}${id}" target="_blank">
-        <img src = "${thumbnailUrl}" alt="Youtube thumbnail">
+        <img src = "${thumbnailUrl}" alt="Youtube thumbnail" class="youtube-thumbnail">
       </a>
       <p>${vidDescription}</p>
   </div>
