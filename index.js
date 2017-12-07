@@ -7,13 +7,35 @@ function getDataFromApi(searchTerm, callback) {
     part: 'snippet'
   };
   $.getJSON(YOUTUBE_SEARCH_URL, query, callback);
+    // .fail(showError);
 }
 
+// function showError(err) {
+//     const outputElem = $('.js-search-results');
+//     // const {status} = err;
+//     // console.log(err);
+
+//     let errMsg = `We couldn't find that video!`;
+    
+//     const errorMessage = `<p>${errMsg}</p>`;
+
+//     outputElem
+//         .empty()
+//         .append(errorMessage);
+// }
+
 function renderNumberOfResults(resultsNumber, perPageResults) {
+    if (resultsNumber > 1) {
     return `
     <h3 aria-live="assertive">About ${resultsNumber} results total, displaying ${perPageResults} results.</h3>
     `;
+  } else if (resultsNumber === 0) {
+      return `
+      <h3 aria-live="assertive">${resultsNumber} results total</h3><br>
+      <h2>We couldn't find that video!</h2>
+      `;
   }
+}
 
 function renderResult(title, thumbnailUrl, id, vidDescription, channel, channelId) {
   const videoBaseUrl = 'https://www.youtube.com/watch?v=';
