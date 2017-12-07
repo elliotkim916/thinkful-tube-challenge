@@ -9,9 +9,9 @@ function getDataFromApi(searchTerm, callback) {
   $.getJSON(YOUTUBE_SEARCH_URL, query, callback);
 }
 
-function renderNumberOfResults(resultsNumber) {
+function renderNumberOfResults(resultsNumber, perPageResults) {
     return `
-    <h3>About ${resultsNumber} results</h3>
+    <h3 aria-live="assertive">About ${resultsNumber} results total, displaying ${perPageResults} results.</h3>
     `;
   }
 
@@ -21,7 +21,7 @@ function renderResult(title, thumbnailUrl, id, vidDescription, channel, channelI
   return `
   <div>
     <h2>
-      <a href="${videoBaseUrl}${id}" >${title}</a>
+      <a href="${videoBaseUrl}${id}" aria-live="polite">${title}</a>
     </h2>
     <h3>
       <a href="${channelBaseUrl}${channelId}" >${channel}</a>
@@ -39,6 +39,7 @@ function displayYouTubeSearchData(data) {
   let results = '';
   let items = data.items;
   let numberOfResults = data.pageInfo.totalResults;
+  let resultsEachPage = data.pageInfo.resultsPerPage;
   // items is an array
     for (let i = 0; i < items.length; i++) {
       let videoTitle = items[i].snippet.title;
@@ -51,7 +52,7 @@ function displayYouTubeSearchData(data) {
     }
   $('.js-search-results').html(results);
 
-  let sum = renderNumberOfResults(numberOfResults);
+  let sum = renderNumberOfResults(numberOfResults, resultsEachPage);
   $('.search-results-number').html(sum);
 }
 
