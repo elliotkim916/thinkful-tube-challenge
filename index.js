@@ -9,18 +9,24 @@ function getDataFromApi(searchTerm, callback) {
   $.getJSON(YOUTUBE_SEARCH_URL, query, callback);
 }
 
+function renderNumberOfResults(resultsNumber) {
+    return `
+    <h3>About ${resultsNumber} results</h3>
+    `;
+  }
+
 function renderResult(title, thumbnailUrl, id, vidDescription, channel, channelId) {
   const videoBaseUrl = 'https://www.youtube.com/watch?v=';
   const channelBaseUrl = 'https://www.youtube.com/channel/';
   return `
   <div>
     <h2>
-      <a href="${videoBaseUrl}${id}" target="_blank">${title}</a>
+      <a href="${videoBaseUrl}${id}" >${title}</a>
     </h2>
     <h3>
-      <a href="${channelBaseUrl}${channelId}" target="_blank">${channel}</a>
+      <a href="${channelBaseUrl}${channelId}" >${channel}</a>
     </h3>
-      <a href="${videoBaseUrl}${id}" target="_blank">
+      <a href="${videoBaseUrl}${id}">
         <img src = "${thumbnailUrl}" alt="Youtube thumbnail" class="youtube-thumbnail">
       </a>
       <p>${vidDescription}</p>
@@ -32,6 +38,7 @@ function displayYouTubeSearchData(data) {
   console.log(JSON.stringify(data, null, 2)); 
   let results = '';
   let items = data.items;
+  let numberOfResults = data.pageInfo.totalResults;
   // items is an array
     for (let i = 0; i < items.length; i++) {
       let videoTitle = items[i].snippet.title;
@@ -43,6 +50,9 @@ function displayYouTubeSearchData(data) {
       results += renderResult(videoTitle, videoThumbnail, videoId, videoDescription, channelName, channelIdentity);
     }
   $('.js-search-results').html(results);
+
+  let sum = renderNumberOfResults(numberOfResults);
+  $('.search-results-number').html(sum);
 }
 
 function watchSubmit() {
