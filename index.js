@@ -43,7 +43,7 @@ function renderResult(title, thumbnailUrl, id, vidDescription, channel, channelI
   return `
   <div>
     <h2>
-      <a href="${videoBaseUrl}${id}" aria-live="polite">${title}</a>
+      <a href="${videoBaseUrl}${id}" aria-live="assertive">${title}</a>
     </h2>
     <h3>
       <a href="${channelBaseUrl}${channelId}" >${channel}</a>
@@ -72,10 +72,10 @@ function displayYouTubeSearchData(data) {
       let channelIdentity = items[i].snippet.channelId;
       results += renderResult(videoTitle, videoThumbnail, videoId, videoDescription, channelName, channelIdentity);
     }
-  $('.js-search-results').html(results);
+  $('.js-search-results').html(results).prop('hidden', false);
 
   let sum = renderNumberOfResults(numberOfResults, resultsEachPage);
-  $('.search-results-number').html(sum);
+  $('.search-results-number').html(sum).prop('hidden', false);
 }
 
 function watchSubmit() {

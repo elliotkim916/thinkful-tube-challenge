@@ -12,19 +12,19 @@
       <h1>Search for Youtube Videos</h1>
     </header>
     
-    <main role="main">
-      <form action="#" class="js-search-form">
+    <div class="container">
+      <form action="#" class="js-search-form search-form">
         <label for="query"></label>
         <input type="text" class="js-query" id="query" title="Youtube search">
         <button type="submit" role="button">Search</button>
       </form>
-    </main>
+    </div>
     
-    <section role="region">
+    <main role="main">
       <h2>Results</h2>
-      <div class="search-results-number" aria-live="assertive"></div>
-      <div class="js-search-results search-results"></div>
-    </section>
+      <div class="search-results-number" hidden></div>
+      <div class="js-search-results search-results" hidden></div>
+    </main>
     
     <script src="https://code.jquery.com/jquery.min.js"></script>
     <script src="index.js"></script>
