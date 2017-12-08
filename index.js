@@ -42,17 +42,28 @@ function renderResult(title, thumbnailUrl, id, vidDescription, channel, channelI
   return `
   <div>
     <h2>
-      <a href="${videoBaseUrl}${id}" aria-live="assertive">${title}</a>
+      <a href="${videoBaseUrl}${id}" videoId=${id} class="lightbox" aria-live="assertive">${title}</a>
     </h2>
     <h3>
       <a href="${channelBaseUrl}${channelId}" >${channel}</a>
     </h3>
-      <a href="${videoBaseUrl}${id}">
-        <img src = "${thumbnailUrl}" alt="Youtube thumbnail" class="youtube-thumbnail">
+      <a href="${videoBaseUrl}${id}" videoId=${id} class="lightbox">
+        <img src = "${thumbnailUrl}" alt="Youtube thumbnail">
       </a>
       <p>${vidDescription}</p>
   </div>
   `;
+}
+
+function lightBox() {
+  $('.js-search-results').on('click', '.lightbox', function(event) {
+    // console.log('clicked');
+  let lightBoxVideo = $(event.currentTarget).attr('videoId');
+    //console.log(lightBoxVideo);
+  $('.js-search-results').prop('hidden', true);
+  $('.lightbox-video').append(`<iframe id="ytplayer" type="text/html" width="640" height="360" src="https://www.youtube.com/embed/${lightBoxVideo}" frameborder="0"></iframe>`);
+  $('.exit-video').prop('hidden', false);
+  }); 
 }
 
 function displayYouTubeSearchData(data) {
@@ -61,6 +72,10 @@ function displayYouTubeSearchData(data) {
   let items = data.items;
   let numberOfResults = data.pageInfo.totalResults;
   let resultsEachPage = data.pageInfo.resultsPerPage;
+
+  let sum = renderNumberOfResults(numberOfResults, resultsEachPage);
+  $('.search-results-number').html(sum).prop('hidden', false);
+
   // items is an array
     for (let i = 0; i < items.length; i++) {
       let videoTitle = items[i].snippet.title;
@@ -72,9 +87,12 @@ function displayYouTubeSearchData(data) {
       results += renderResult(videoTitle, videoThumbnail, videoId, videoDescription, channelName, channelIdentity);
     }
   $('.js-search-results').html(results).prop('hidden', false);
-
-  let sum = renderNumberOfResults(numberOfResults, resultsEachPage);
-  $('.search-results-number').html(sum).prop('hidden', false);
+lightBox();
+  $('.exit-video').on('click', function(event) {
+    $('.lightbox-video').hide();
+    $('.js-search-results').prop('hidden', false);
+  });
+  
 }
 
 function watchSubmit() {
