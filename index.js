@@ -31,7 +31,6 @@ function renderNumberOfResults(resultsNumber, perPageResults) {
     `;
   } else if (resultsNumber === 0) {
       return `
-      <h3 aria-live="assertive">${resultsNumber} results total</h3><br>
       <h2>We couldn't find that video!</h2>
       `;
   }
