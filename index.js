@@ -57,6 +57,7 @@ function renderResult(title, thumbnailUrl, id, vidDescription, channel, channelI
 
 function lightBox() {
   $('.js-search-results').on('click', '.lightbox', function(event) {
+    event.preventDefault();
     // console.log('clicked');
   let lightBoxVideo = $(event.currentTarget).attr('videoId');
     //console.log(lightBoxVideo);
@@ -86,13 +87,15 @@ function displayYouTubeSearchData(data) {
       let channelIdentity = items[i].snippet.channelId;
       results += renderResult(videoTitle, videoThumbnail, videoId, videoDescription, channelName, channelIdentity);
     }
+
   $('.js-search-results').html(results).prop('hidden', false);
-lightBox();
+  lightBox();
   $('.exit-video').on('click', function(event) {
+    event.preventDefault();
     $('.lightbox-video').hide();
     $('.js-search-results').prop('hidden', false);
   });
-  
+  watchSubmit();
 }
 
 function watchSubmit() {
