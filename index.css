@@ -13,3 +13,8 @@ body {
     transition: 1s;
     transform: scale(1.1);
   }
+
+  .search-form input:focus,
+  .search-form button:focus {
+    outline: 5px dotted salmon;
+  }
