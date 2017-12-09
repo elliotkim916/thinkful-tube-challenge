@@ -7,22 +7,7 @@ function getDataFromApi(searchTerm, callback) {
     part: 'snippet'
   };
   $.getJSON(YOUTUBE_SEARCH_URL, query, callback);
-    // .fail(showError);
 }
-
-// function showError(err) {
-//     const outputElem = $('.js-search-results');
-//     // const {status} = err;
-//     // console.log(err);
-
-//     let errMsg = `We couldn't find that video!`;
-    
-//     const errorMessage = `<p>${errMsg}</p>`;
-
-//     outputElem
-//         .empty()
-//         .append(errorMessage);
-// }
 
 function renderNumberOfResults(resultsNumber, perPageResults) {
     if (resultsNumber > 1) {
@@ -55,50 +40,55 @@ function renderResult(title, thumbnailUrl, id, vidDescription, channel, channelI
   `;
 }
 
-function lightBox() {
+function showLightBox() {
   $('.js-search-results').on('click', '.lightbox', function(event) {
-    event.preventDefault();
-    // console.log('clicked');
-  let lightBoxVideo = $(event.currentTarget).attr('videoId');
-    //console.log(lightBoxVideo);
+  $('#ytplayer').remove();
+  $('.page').addClass('blur');  
+  let lightBoxVideo = $(event.currentTarget).attr('videoId');  
   $('.js-search-results').prop('hidden', true);
-  $('.lightbox-video').append(`<iframe id="ytplayer" type="text/html" width="640" height="360" src="https://www.youtube.com/embed/${lightBoxVideo}" frameborder="0"></iframe>`);
+  $('.lightbox-video').append(`<iframe id="ytplayer" type="text/html" width="640" height="360" src="https://www.youtube.com/embed/${lightBoxVideo}" frameborder="0" class="iframe"></iframe>`);
   $('.exit-video').prop('hidden', false);
   }); 
 }
 
 function displayYouTubeSearchData(data) {
-  console.log(JSON.stringify(data, null, 2)); 
+  // console.log(JSON.stringify(data, null, 2)); 
   let results = '';
   let items = data.items;
   let numberOfResults = data.pageInfo.totalResults;
   let resultsEachPage = data.pageInfo.resultsPerPage;
 
+  // renders total results number and results per page to DOM
   let sum = renderNumberOfResults(numberOfResults, resultsEachPage);
   $('.search-results-number').html(sum).prop('hidden', false);
 
   // items is an array
-    for (let i = 0; i < items.length; i++) {
-      let videoTitle = items[i].snippet.title;
-      let videoThumbnail = items[i].snippet.thumbnails.default.url;
-      let videoId = items[i].id.videoId;
-      let videoDescription = items[i].snippet.description;
-      let channelName = items[i].snippet.channelTitle;
-      let channelIdentity = items[i].snippet.channelId;
-      results += renderResult(videoTitle, videoThumbnail, videoId, videoDescription, channelName, channelIdentity);
+  for (let i = 0; i < items.length; i++) {
+    let videoTitle = items[i].snippet.title;
+    let videoThumbnail = items[i].snippet.thumbnails.default.url;
+    let videoId = items[i].id.videoId;
+    let videoDescription = items[i].snippet.description;
+    let channelName = items[i].snippet.channelTitle;
+    let channelIdentity = items[i].snippet.channelId;
+    results += renderResult(videoTitle, videoThumbnail, videoId, videoDescription, channelName, channelIdentity);
     }
-
   $('.js-search-results').html(results).prop('hidden', false);
-  lightBox();
-  $('.exit-video').on('click', function(event) {
-    event.preventDefault();
-    $('.lightbox-video').hide();
-    $('.js-search-results').prop('hidden', false);
-  });
-  watchSubmit();
+  showLightBox();
+  handleExitVideoButton();
+}
+
+function handleExitVideoButton() {
+  $('.exit-button').on('click', function(event) {
+   event.preventDefault();
+   $('.page').removeClass('blur');
+   $('.exit-video').prop('hidden', true);
+   $('#ytplayer').remove();
+   $('.js-search-results').prop('hidden', false);
+ });
 }
 
 function watchSubmit() {
+  $('.page').removeClass('blur');
   $('.js-search-form').submit(function(event) {
     event.preventDefault();
     const queryTarget = $(event.currentTarget).find('.js-query');
