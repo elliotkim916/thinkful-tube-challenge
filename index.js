@@ -46,7 +46,7 @@ function showLightBox() {
   $('.page').addClass('blur');  
   let lightBoxVideo = $(event.currentTarget).attr('videoId');  
   $('.js-search-results').prop('hidden', true);
-  $('.lightbox-video').append(`<iframe id="ytplayer" type="text/html" width="640" height="360" src="https://www.youtube.com/embed/${lightBoxVideo}" frameborder="0" class="iframe"></iframe>`);
+  $('.lightbox-video').append(`<iframe id="ytplayer" type="text/html" title="Youtube Video Lightbox" width="640" height="360" src="https://www.youtube.com/embed/${lightBoxVideo}" frameborder="0" class="iframe"></iframe>`);
   $('.exit-button').prop('hidden', false);
   }); 
 }
