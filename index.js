@@ -21,27 +21,29 @@ function renderNumberOfResults(resultsNumber, perPageResults) {
   }
 }
 
-function renderResult(title, thumbnailUrl, id, vidDescription, channel, channelId) {
+function renderResult(data) {
   const videoBaseUrl = 'https://www.youtube.com/watch?v=';
   const channelBaseUrl = 'https://www.youtube.com/channel/';
+  const {title, thumbnailUrl, id, description, channelName, channelIdentity} = data;
   return `
   <div>
     <h2>
-      <span href="${videoBaseUrl}${id}" videoId=${id} class="lightbox" aria-live="assertive">${title}</span>
+      <a href="${videoBaseUrl}${id}" videoId=${id} class="lightbox" aria-live="assertive">${title}</a>
     </h2>
+    <a href="${videoBaseUrl}${id}" videoId=${id} class="lightbox">
+      <img src = "${thumbnailUrl}" alt="Youtube thumbnail">
+    </a>
     <h3>
-      <a href="${channelBaseUrl}${channelId}" >${channel}</a>
+      <a href="${channelBaseUrl}${channelIdentity}" >${channelName}</a>
     </h3>
-      <span href="${videoBaseUrl}${id}" videoId=${id} class="lightbox">
-        <img src = "${thumbnailUrl}" alt="Youtube thumbnail">
-      </span>
-      <p>${vidDescription}</p>
+      <p>${description}</p>
   </div>
   `;
 }
 
 function showLightBox() {
   $('.js-search-results').on('click', '.lightbox', function(event) {
+  event.preventDefault();
   $('#ytplayer').remove();
   $('.page').addClass('blur');  
   let lightBoxVideo = $(event.currentTarget).attr('videoId');  
@@ -63,15 +65,19 @@ function displayYouTubeSearchData(data) {
   $('.search-results-number').html(sum).prop('hidden', false);
 
   // items is an array
+  let current;
   for (let i = 0; i < items.length; i++) {
-    let videoTitle = items[i].snippet.title;
-    let videoThumbnail = items[i].snippet.thumbnails.default.url;
-    let videoId = items[i].id.videoId;
-    let videoDescription = items[i].snippet.description;
-    let channelName = items[i].snippet.channelTitle;
-    let channelIdentity = items[i].snippet.channelId;
-    results += renderResult(videoTitle, videoThumbnail, videoId, videoDescription, channelName, channelIdentity);
-    }
+    current = items[i];
+    const videoData = {
+      title: current.snippet.title,
+      thumbnailUrl: current.snippet.thumbnails.default.url,
+      id: current.id.videoId,
+      description: current.snippet.description,
+      channelName: current.snippet.channelTitle,
+      channelIdentity: current.snippet.channelId
+    };
+      results += renderResult(videoData);
+  }
   $('.js-search-results').html(results).prop('hidden', false);
   showLightBox();
   handleExitVideoButton();
