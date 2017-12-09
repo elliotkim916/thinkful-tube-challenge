@@ -27,14 +27,14 @@ function renderResult(title, thumbnailUrl, id, vidDescription, channel, channelI
   return `
   <div>
     <h2>
-      <a href="${videoBaseUrl}${id}" videoId=${id} class="lightbox" aria-live="assertive">${title}</a>
+      <span href="${videoBaseUrl}${id}" videoId=${id} class="lightbox" aria-live="assertive">${title}</span>
     </h2>
     <h3>
       <a href="${channelBaseUrl}${channelId}" >${channel}</a>
     </h3>
-      <a href="${videoBaseUrl}${id}" videoId=${id} class="lightbox">
+      <span href="${videoBaseUrl}${id}" videoId=${id} class="lightbox">
         <img src = "${thumbnailUrl}" alt="Youtube thumbnail">
-      </a>
+      </span>
       <p>${vidDescription}</p>
   </div>
   `;
@@ -47,7 +47,7 @@ function showLightBox() {
   let lightBoxVideo = $(event.currentTarget).attr('videoId');  
   $('.js-search-results').prop('hidden', true);
   $('.lightbox-video').append(`<iframe id="ytplayer" type="text/html" width="640" height="360" src="https://www.youtube.com/embed/${lightBoxVideo}" frameborder="0" class="iframe"></iframe>`);
-  $('.exit-video').prop('hidden', false);
+  $('.exit-button').prop('hidden', false);
   }); 
 }
 
